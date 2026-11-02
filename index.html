@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Task Listings Concept</title>
+  <meta name="description" content="A what if design concept for the Tasks tab of an AI data marketplace. Fake data.">
+  <meta name="color-scheme" content="dark light">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip" href="#listings">Skip to listings</a>
+
+  <div class="shell" id="shell">
+    <!-- ===== Sidebar ===== -->
+    <aside class="sidebar" id="sidebar" aria-label="Main">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-name">Market</span>
+        <button class="icon-btn nav-close" id="navClose" aria-label="Close menu">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8"/></svg>
+        </button>
+      </div>
+      <nav>
+        <ul class="nav">
+          <li><a href="#" class="nav-item is-active" aria-current="page">Browse</a></li>
+          <li><a href="#" class="nav-item">Saved</a></li>
+          <li><a href="#" class="nav-item">Requests</a></li>
+          <li><a href="#" class="nav-item">Purchases</a></li>
+        </ul>
+      </nav>
+      <div class="nav-foot">
+        <a href="#" class="nav-item">Settings</a>
+      </div>
+    </aside>
+    <div class="scrim" id="navScrim" hidden></div>
+
+    <!-- ===== Main ===== -->
+    <div class="main" id="main">
+      <header class="mobile-bar">
+        <button class="icon-btn" id="navOpen" aria-label="Open menu" aria-controls="sidebar" aria-expanded="false">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 4.5h11M2.5 8h11M2.5 11.5h11"/></svg>
+        </button>
+        <span class="brand-name">Market</span>
+      </header>
+
+      <div class="page">
+        <header class="page-head">
+          <h1>Browse</h1>
+          <p class="lede">Data and environments for training and testing agents.</p>
+        </header>
+
+        <!-- Tabs -->
+        <div class="tabs" role="tablist" aria-label="Listing type">
+          <button role="tab" id="tab-codebases" aria-controls="panel-codebases" aria-selected="false" tabindex="-1">Codebases</button>
+          <button role="tab" id="tab-tasks" aria-controls="panel-tasks" aria-selected="true">Tasks</button>
+          <button role="tab" id="tab-raw" aria-controls="panel-raw" aria-selected="false" tabindex="-1">Raw data</button>
+        </div>
+
+        <section role="tabpanel" id="panel-codebases" aria-labelledby="tab-codebases" hidden>
+          <p class="tab-note">This concept covers the Tasks tab only.</p>
+        </section>
+        <section role="tabpanel" id="panel-raw" aria-labelledby="tab-raw" hidden>
+          <p class="tab-note">This concept covers the Tasks tab only.</p>
+        </section>
+
+        <section role="tabpanel" id="panel-tasks" aria-labelledby="tab-tasks">
+          <!-- Toolbar -->
+          <div class="toolbar">
+            <div class="search">
+              <label for="search" class="sr-only">Search task listings</label>
+              <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5L14 14"/></svg>
+              <input id="search" type="search" placeholder="Search titles, vendors, topics" autocomplete="off">
+              <kbd aria-hidden="true">/</kbd>
+            </div>
+            <button class="btn" id="filtersBtn" aria-expanded="false" aria-controls="filters">
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 4h11M4.5 8h7M6.5 12h3"/></svg>
+              Filters<span class="count" id="filterCount" hidden></span>
+            </button>
+            <div class="sort">
+              <label for="sort">Sort</label>
+              <select id="sort">
+                <option value="recommended">Recommended</option>
+                <option value="price-asc">Price per task, low to high</option>
+                <option value="price-desc">Price per task, high to low</option>
+                <option value="tasks-desc">Most tasks</option>
+                <option value="agreement-desc">Highest grader agreement</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Filters -->
+          <form class="filters" id="filters" hidden>
+            <fieldset>
+              <legend>Grading</legend>
+              <label><input type="checkbox" name="grader" value="tests"> Tests decide the reward</label>
+              <label><input type="checkbox" name="grader" value="rubric"> Rubric scored</label>
+            </fieldset>
+            <fieldset>
+              <legend>Price per task</legend>
+              <label><input type="radio" name="price" value="any" checked> Any</label>
+              <label><input type="radio" name="price" value="low"> Under $250</label>
+              <label><input type="radio" name="price" value="mid"> $250 to $500</label>
+              <label><input type="radio" name="price" value="high"> Over $500</label>
+            </fieldset>
+            <fieldset>
+              <legend>Area</legend>
+              <div class="area-list" id="areaList"></div>
+            </fieldset>
+            <fieldset>
+              <legend>Trust</legend>
+              <label><input type="checkbox" name="verified" value="yes"> Verified only</label>
+            </fieldset>
+            <div class="filters-foot">
+              <button type="button" class="btn-link" id="clearFilters">Clear filters</button>
+              <button type="button" class="btn" id="doneFilters">Done</button>
+            </div>
+          </form>
+
+          <p class="result-line" id="resultLine"></p>
+
+          <!-- Listings -->
+          <ul class="listings" id="listings" tabindex="-1" aria-label="Task listings"></ul>
+
+          <!-- Empty state -->
+          <div class="empty" id="empty" hidden>
+            <h2>No listings match</h2>
+            <p id="emptyText">Try fewer filters or a different search.</p>
+            <button class="btn btn-primary" id="resetAll">Reset search and filters</button>
+          </div>
+        </section>
+
+        <footer class="site-foot">A design concept made from public information. Fake data.</footer>
+      </div>
+    </div>
+
+    <!-- ===== Detail panel ===== -->
+    <div class="panel-scrim" id="panelScrim" hidden></div>
+    <aside class="panel" id="panel" aria-labelledby="pTitle" hidden>
+      <div class="panel-head">
+        <p class="panel-vendor" id="pVendor"></p>
+        <button class="icon-btn" id="panelClose" aria-label="Close details">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8"/></svg>
+        </button>
+      </div>
+      <div class="panel-body" id="panelBody">
+        <h2 id="pTitle" tabindex="-1"></h2>
+
+        <div class="ptabs" role="tablist" aria-label="Listing details">
+          <button role="tab" id="ptab-meta" aria-controls="ppanel-meta" aria-selected="true">Metadata</button>
+          <button role="tab" id="ptab-qa" aria-controls="ppanel-qa" aria-selected="false" tabindex="-1">Quality checks</button>
+          <button role="tab" id="ptab-runs" aria-controls="ppanel-runs" aria-selected="false" tabindex="-1">Model runs</button>
+        </div>
+
+        <!-- Metadata -->
+        <div class="ppanel" role="tabpanel" id="ppanel-meta" aria-labelledby="ptab-meta">
+        <section aria-labelledby="hTests">
+          <h3 id="hTests">What this tests</h3>
+          <p id="pTests"></p>
+        </section>
+
+        <section aria-labelledby="hGrade">
+          <h3 id="hGrade">How it is graded <span class="tag" id="pGrader"></span></h3>
+          <ul class="bullets" id="pBullets"></ul>
+          <div class="preview">
+            <p class="preview-label" id="previewLabel">Score preview. Turn checks on or off.</p>
+            <ul class="checks" id="pChecks" aria-labelledby="previewLabel"></ul>
+            <div class="score">
+              <span>Final score</span>
+              <span class="score-val" id="pScore">1.00</span>
+            </div>
+            <div class="score-bar" aria-hidden="true"><span id="pScoreBar"></span></div>
+          </div>
+        </section>
+
+        <section aria-labelledby="hRun">
+          <h3 id="hRun">Sample run</h3>
+          <ol class="run" id="pRun"></ol>
+        </section>
+
+        <section aria-labelledby="hQuality">
+          <h3 id="hQuality">Quality signals <span class="tag">Sample data</span></h3>
+          <dl class="signals" id="pSignals"></dl>
+        </section>
+
+        <section aria-labelledby="hScope">
+          <h3 id="hScope">Scope</h3>
+          <div class="scope">
+            <div><p class="scope-h">Included</p><ul id="pIn"></ul></div>
+            <div><p class="scope-h">Not included</p><ul id="pOut"></ul></div>
+          </div>
+        </section>
+        </div>
+
+        <!-- Quality checks -->
+        <div class="ppanel" role="tabpanel" id="ppanel-qa" aria-labelledby="ptab-qa" hidden>
+          <p class="qa-summary" id="pQaSummary"></p>
+          <ul class="qa" id="pQa"></ul>
+          <div class="qa-empty" id="pQaEmpty" hidden>
+            <p><strong>No QA agent results</strong></p>
+            <p>Checks have not run on this listing yet.</p>
+          </div>
+          <p class="sample-note">Sample data.</p>
+        </div>
+
+        <!-- Model runs -->
+        <div class="ppanel" role="tabpanel" id="ppanel-runs" aria-labelledby="ptab-runs" hidden>
+          <div class="table-wrap">
+            <table class="runs-table">
+              <caption class="sr-only">Model runs on this listing</caption>
+              <thead><tr><th scope="col">Model</th><th scope="col">Pass rate</th><th scope="col">Runs</th><th scope="col">Reward</th></tr></thead>
+              <tbody id="pRunsBody"></tbody>
+            </table>
+          </div>
+          <p class="runs-note" id="pRunsNote" hidden>Based on few runs. Fewer than 3 runs can swing a pass rate a lot.</p>
+          <p class="sample-note">Sample data. Reward is the average across runs, from 0 to 1.</p>
+        </div>
+      </div>
+
+      <div class="panel-foot">
+        <div class="panel-price">
+          <span class="price-total" id="pPrice"></span>
+          <span class="price-unit" id="pUnit"></span>
+        </div>
+        <div class="buy-actions">
+          <button class="btn" id="offerBtn">Make an offer</button>
+          <button class="btn btn-primary" id="buyBtn">Buy now</button>
+        </div>
+        <p class="confirm" id="confirm" role="status" hidden></p>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Verified popover, one shared instance -->
+  <div class="popover" id="popover" role="dialog" aria-labelledby="popTitle" hidden>
+    <p class="pop-title" id="popTitle" tabindex="-1">Verified by Market: every required and recommended check passed.</p>
+    <p class="pop-date">Sample data.</p>
+    <button type="button" class="btn-link" id="popChecks">View checks</button>
+  </div>
+
+  <!-- Screen reader announcements -->
+  <p class="sr-only" id="live" aria-live="polite"></p>
+
+  <script src="script.js"></script>
+</body>
+</html>
